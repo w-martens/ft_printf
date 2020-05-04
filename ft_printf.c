@@ -6,7 +6,7 @@
 /*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 15:20:25 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/05/04 19:47:51 by wmartens      ########   odam.nl         */
+/*   Updated: 2020/05/04 20:12:19 by wmartens      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static void	int_width(t_printf *p_s, int intlen, int i)
 	len = p_s->width - p_s->print_len;
 	if (p_s->prec - p_s->print_len > 0)
 		len -=  (p_s->prec - p_s->print_len);
-	if (i < 0 && p_s->min_flag == 0 && intlen + p_s->prec + 1 > p_s->width)
+	if (i < 0 && p_s->min_flag == 0 && p_s->prec + 1 >= p_s->width)
 		len--;
+	if (i < 0 && p_s->prec > p_s->print_len)
+		len = p_s->width - p_s->prec;
 	width = p_s->nul_flag == 0 || p_s->min_flag == 1 ? ' ' : '0';
 	while (len > 0)
 	{
@@ -438,7 +440,7 @@ int	ft_printf(const char *fmt, ...)
 	return (p_s.ret_cnt);
 }
 
-# define TEST "%*.*d", 2, 0, 0
+# define TEST "%*.*d", 1, 1, -1
 
 int	main(void)
 {
