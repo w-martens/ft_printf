@@ -6,7 +6,7 @@
 /*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 15:20:25 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/05/04 20:12:19 by wmartens      ########   odam.nl         */
+/*   Updated: 2020/05/13 18:56:03 by wmartens      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,7 +440,7 @@ int	ft_printf(const char *fmt, ...)
 	return (p_s.ret_cnt);
 }
 
-# define TEST "%*.*d", 1, 1, -1
+# define TEST "%*.*d %.4s %p", 6, 6, 2147483648, "lol grappig", ptr 
 
 int	main(void)
 {
@@ -450,6 +450,7 @@ int	main(void)
 	ret = 0;
 	retf = 0;
 	ptr = 0;
+	ptr++;
 	ft_printf("[");
 	ret = ft_printf(TEST);
 	printf("]\t: %d <wout style\n[", ret);
