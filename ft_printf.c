@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <bsd/stdio.h>
+#include <stdio.h>
 
 static void	print_width(t_printf *p_s)
 {
@@ -144,19 +144,21 @@ static void	num_print(t_printf *p_s, int n)
 
 static int	int_len(t_printf *p_s, int i)
 {
-	int ret;
-	
+	int 		ret;
+	long int 	li;
+
+	li = i;
 	ret = 0;
-	if (i < 0)
+	if (li < 0)
 	{
-		i = i * -1;
+		li = li * -1;
 		ret++;
 	}
-	if (i == 0 && p_s->prec != 0)
+	if (li == 0 && p_s->prec != 0)
 		ret++;
-	while (i > 0)
+	while (li > 0)
 	{
-		i /= 10;
+		li /= 10;
 		ret++;
 	}
 	p_s->print_len = ret;
@@ -186,13 +188,14 @@ static void print_prec(t_printf *p_s)
 	}
 }
 
-static void print_min(t_printf *p_s)
+static void	print_min(t_printf *p_s, int i)
 {
-	write(1, "-", 1);
-	p_s->prec++;
-	p_s->ret_cnt++;
+	if (i < 0)
+	{
+		write(1, "-", 1);
+		p_s->ret_cnt++;
+	}
 }
-
 
 static void	int_print(t_printf *p_s, int i)
 {
@@ -202,15 +205,16 @@ static void	int_print(t_printf *p_s, int i)
 	if (p_s->prec == 0 && i == 0 && p_s->prec_on == 1)
 	{
 		print_width(p_s);
-		return;
+		return ;
 	}
 	intlen = int_len(p_s, i);
+	if (i < 0)
+		p_s->prec++;
 	if (p_s->prec_on == 1)
 		p_s->nul_flag = 0;
 	if (p_s->min_flag == 0)
 		int_width(p_s, intlen, i);
-	if (i < 0)
-		print_min(p_s);
+	print_min(p_s, i);
 	prec_cpy = prec_set(p_s, intlen);
 	if (prec_cpy >= p_s->print_len && p_s->prec_on == 1)
 		print_prec(p_s);
@@ -230,10 +234,10 @@ static void	unum_print(t_printf *p_s, unsigned int n)
 static int	unint_len(t_printf *p_s, unsigned int i)
 {
 	int ret;
-	
+
 	ret = 0;
 	if (i == 0 && p_s->prec != 0)
-		ret++;	
+		ret++;
 	while (i > 0)
 	{
 		i /= 10;
@@ -249,7 +253,7 @@ static void	unint_print(t_printf *p_s, unsigned int i)
 	int prec_cpy;
 
 	if (p_s->prec == 0 && i == 0 && p_s->prec_on == 1)
-		return;
+		return ;
 	intlen = unint_len(p_s, i);
 	if (p_s->prec_on == 1)
 		p_s->nul_flag = 0;
@@ -440,7 +444,7 @@ int	ft_printf(const char *fmt, ...)
 	return (p_s.ret_cnt);
 }
 
-# define TEST "%*.*d %.4s %p", 6, 6, 2147483648, "lol grappig", ptr 
+# define TEST "%8.5i", -1994
 
 int	main(void)
 {
