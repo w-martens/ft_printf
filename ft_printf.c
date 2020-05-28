@@ -20,6 +20,8 @@ static void	print_width(t_printf *p_s)
 
 	len = p_s->width - p_s->print_len;
 	width = p_s->nul_flag == 0 || p_s->min_flag == 1 ? ' ' : '0';
+	if (p_s->specifier == 's')
+		width = ' ';
 	while (len > 0)
 	{
 		write(1, &width, 1);
@@ -153,7 +155,7 @@ static int	int_len(t_printf *p_s, int i)
 		li = li * -1;
 		ret++;
 	}
-	if (li == 0 && p_s->prec != 0)
+	if (li == 0)
 		ret++;
 	while (li > 0)
 	{
@@ -201,6 +203,8 @@ static void	int_print(t_printf *p_s, int i)
 	int intlen;
 	int prec_cpy;
 
+	if (p_s->prec_on == 1)
+		p_s->nul_flag = 0;
 	if (p_s->prec == 0 && i == 0 && p_s->prec_on == 1)
 	{
 		print_width(p_s);
@@ -211,8 +215,6 @@ static void	int_print(t_printf *p_s, int i)
 		p_s->prec++;
 	if (p_s->nul_flag == 1)
 		print_min(p_s, i);
-	if (p_s->prec_on == 1)
-		p_s->nul_flag = 0;
 	if (p_s->min_flag == 0)
 		int_width(p_s, intlen, i);
 	if (p_s->nul_flag == 0)
@@ -446,7 +448,7 @@ int	ft_printf(const char *fmt, ...)
 	return (p_s.ret_cnt);
 }
 
-# define TEST "%08i", -1994
+# define TEST "%01.0i", 0
 
 int	main(void)
 {
