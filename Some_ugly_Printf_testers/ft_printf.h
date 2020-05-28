@@ -9,7 +9,7 @@
 /*   Updated: 2020/04/28 17:03:03 by wmartens      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-8.7i
+
 #include "libft/libft.h"
 #include <stdarg.h>
 #include <unistd.h>
