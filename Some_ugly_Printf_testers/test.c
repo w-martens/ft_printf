@@ -305,6 +305,15 @@ static void	xx_print(t_printf *p_s, unsigned long n)
 		print_width(p_s);
 }
 
+static void	perc_print(t_printf *p_s)
+{
+	char c;
+
+	c = '%';
+	write(1, &c, 1);
+	p_s->ret_cnt++;
+}
+
 static void	wp_amt(const char **fmt, t_printf *p_s, char flag)
 {
 	int wp_amt;
@@ -420,6 +429,8 @@ static void	print_arg(t_printf *p_s, va_list arg)
 		unint_print(p_s, va_arg(arg, unsigned int));
 	if (p_s->specifier == 'x' || p_s->specifier == 'X')
 		xx_print(p_s, va_arg(arg, unsigned long));
+	if (p_s->specifier == '%')
+		perc_print(p_s);
 }
 
 int	ft_printf(const char *fmt, ...)
