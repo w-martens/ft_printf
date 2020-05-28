@@ -30,14 +30,14 @@ static void	print_width(t_printf *p_s)
 	}
 }
 
-static void	int_width(t_printf *p_s, int intlen, int i)
+static void	int_width(t_printf *p_s, int i)
 {
 	char	width;
 	int		len;
 
 	len = p_s->width - p_s->print_len;
 	if (p_s->prec - p_s->print_len > 0)
-		len -=  (p_s->prec - p_s->print_len);
+		len -= (p_s->prec - p_s->print_len);
 	if (i < 0 && p_s->min_flag == 0 && p_s->prec + 1 >= p_s->width)
 		len--;
 	if (i < 0 && p_s->prec > p_s->print_len)
@@ -216,7 +216,7 @@ static void	int_print(t_printf *p_s, int i)
 	if (p_s->nul_flag == 1)
 		print_min(p_s, i);
 	if (p_s->min_flag == 0)
-		int_width(p_s, intlen, i);
+		int_width(p_s, i);
 	if (p_s->nul_flag == 0)
 		print_min(p_s, i);
 	prec_cpy = prec_set(p_s, intlen);
@@ -224,7 +224,7 @@ static void	int_print(t_printf *p_s, int i)
 		print_prec(p_s);
 	num_print(p_s, i);
 	if (p_s->min_flag == 1)
-		int_width(p_s, intlen, i);
+		int_width(p_s, i);
 }
 
 static void	unum_print(t_printf *p_s, unsigned int n)
@@ -317,9 +317,7 @@ static void	perc_print(t_printf *p_s)
 static void	wp_amt(const char **fmt, t_printf *p_s, char flag)
 {
 	int wp_amt;
-	int ret;
 
-	ret = 0;
 	while ((*(*fmt)) == '0')
 		(*fmt)++;
 	wp_amt = ft_atoi(*fmt);
@@ -460,27 +458,10 @@ int	ft_printf(const char *fmt, ...)
 }
 
 // # define TEST "And these in the middle |%c%s%p%d%i%u%x%X%%%%%X%x%u%i%d%p%s%c| of a sentence", c, s, p, di, di, u, x, x, x, x, u, di, di, p, s, c
-# define TEST "yo %% ;p"
+# define TEST "you die? %%"
 
 int	main(void)
 {
-	int broken;
-	int	bonus;
-	
-	char			c = 'a';
-	char			*s = "stringalingadingdong";
-	int				di = 42;
-	int				*p = &di;
-	unsigned int	u = 42;
-	unsigned int	xcap = 185334478;
-	unsigned int	x = 185334478;
-	
-	char			*percent = "It goes well 100% of the time";
-	char			*conv = "%c, %s, %p, %d, %i, %u, %x, %X, %%";
-
-	broken = 0;
-	bonus = 0;
-
 	int ret;
 	int retf;
 	void *ptr;
