@@ -67,6 +67,8 @@ static void	str_print(t_printf *p_s, char *str)
 	int i;
 
 	i = 0;
+	if (str == NULL)
+		str = "(null)";
 	p_s->print_len = ft_strlen(str);
 	if (p_s->prec_on == 1 && p_s->print_len > p_s->prec)
 		p_s->print_len = (p_s->prec);
