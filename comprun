@@ -1,0 +1,1 @@
+gcc -g ft_printf.c hex_utils.c int_utils.c libft_utils.c main.c parse_utils.c unsigned_utils.c wp_utils.c chrstr_utils.c && ./a.out

@@ -6,7 +6,7 @@
 /*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 17:50:10 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/04/28 17:03:03 by wmartens      ########   odam.nl         */
+/*   Updated: 2020/06/02 15:49:53 by wmartens      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef	struct	s_printf
 	int		prec_on;
 	int		nul_flag;
 	int		min_flag;
-	char	specifier;
+	char	spec;
 	int		print_len;
 }				t_printf;
 

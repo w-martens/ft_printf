@@ -6,7 +6,7 @@
 /*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 15:20:25 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/05/13 18:56:03 by wmartens      ########   odam.nl         */
+/*   Updated: 2020/06/02 15:49:53 by wmartens      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	print_width(t_printf *p_s)
 
 	len = p_s->width - p_s->print_len;
 	width = p_s->nul_flag == 0 || p_s->min_flag == 1 ? ' ' : '0';
-	if (p_s->specifier == 's')
+	if (p_s->spec == 's')
 		width = ' ';
 	while (len > 0)
 	{
@@ -91,7 +91,7 @@ static void	hex_print(t_printf *p_s, unsigned long n)
 	char	*hex;
 
 	hex = "0123456789abcdef";
-	if (p_s->specifier == 'X')
+	if (p_s->spec == 'X')
 		hex = "0123456789ABCDEF";
 	if (n > 15)
 		hex_print(p_s, (n / 16));
@@ -340,7 +340,7 @@ static void	init_struct(t_printf *p_s)
 	p_s->prec_on = 0;
 	p_s->nul_flag = 0;
 	p_s->min_flag = 0;
-	p_s->specifier = 0;
+	p_s->spec = 0;
 	p_s->print_len = 0;
 }
 
@@ -358,7 +358,7 @@ static int	str_schr(char str, char *set)
 static void	spec_chk(const char **fmt, t_printf *p_s)
 {
 	if (str_schr(*(*fmt), "cspdiuxX%"))
-		p_s->specifier = *(*fmt);
+		p_s->spec = *(*fmt);
 }
 
 static void	wp_asterisk(const char **fmt, t_printf *p_s, va_list arg, char flag)
@@ -416,19 +416,19 @@ static void	flag_chk(const char **fmt, t_printf *p_s, va_list arg)
 
 static void	print_arg(t_printf *p_s, va_list arg)
 {
-	if (p_s->specifier == 'c')
+	if (p_s->spec == 'c')
 		char_print(p_s, va_arg(arg, int));
-	if (p_s->specifier == 's')
+	if (p_s->spec == 's')
 		str_print(p_s, va_arg(arg, char *));
-	if (p_s->specifier == 'p')
+	if (p_s->spec == 'p')
 		ptr_print(p_s, va_arg(arg, unsigned long));
-	if (p_s->specifier == 'd' || p_s->specifier == 'i')
+	if (p_s->spec == 'd' || p_s->spec == 'i')
 		int_print(p_s, va_arg(arg, int));
-	if (p_s->specifier == 'u')
+	if (p_s->spec == 'u')
 		unint_print(p_s, va_arg(arg, unsigned int));
-	if (p_s->specifier == 'x' || p_s->specifier == 'X')
+	if (p_s->spec == 'x' || p_s->spec == 'X')
 		xx_print(p_s, va_arg(arg, unsigned long));
-	if (p_s->specifier == '%')
+	if (p_s->spec == '%')
 		perc_print(p_s);
 }
 
