@@ -3,33 +3,39 @@
 /*                                                        ::::::::            */
 /*   parse_utils.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
+/*   By: y4k_wm <y4k_wm@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/04/28 15:46:53 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/04/28 17:22:42 by wmartens      ########   odam.nl         */
+/*   Created: 2020/05/28 16:19:46 by y4k_wm        #+#    #+#                 */
+/*   Updated: 2020/05/30 17:43:25 by y4k_wm        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_printf.h>
+#include "ft_printf.h"
 
-static void	init_struct(t_printf *p_s)
+void	iter_fmt(const char **fmt)
 {
-	p_s->width = 0;
-	p_s->prec = 0;
-	p_s->prec_on = 0;
-	p_s->nul_flag = 0;
-	p_s->min_flag = 0;
-	p_s->specifier = 0;
-	p_s->print_len = 0;
+	if (*(*fmt) != '\0')
+		(*fmt)++;
 }
 
-static void	spec_chk(const char **fmt, t_printf *p_s)
+int		str_schr(char str, char *set)
+{
+	while (*set != '\0')
+	{
+		if (str == *set)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+void	spec_chk(const char **fmt, t_printf *p_s)
 {
 	if (str_schr(*(*fmt), "cspdiuxX%"))
 		p_s->specifier = *(*fmt);
 }
 
-static void	wp_asterisk(const char **fmt, t_printf *p_s, va_list arg, char flag)
+void	wp_asterisk(const char **fmt, t_printf *p_s, va_list arg, char flag)
 {
 	int width;
 	int precision;
@@ -54,37 +60,16 @@ static void	wp_asterisk(const char **fmt, t_printf *p_s, va_list arg, char flag)
 	(*fmt)++;
 }
 
-static void	wp_amt(const char **fmt, t_printf *p_s, char flag)
+void	flag_chk(const char **fmt, t_printf *p_s, va_list arg)
 {
-	int wp_amt;
-	int ret;
-
-	ret = 0;
-	while ((*(*fmt)) == '0')
-		(*fmt)++;
-	wp_amt = ft_atoi(*fmt);
-	if (flag == 'w')
-		p_s->width = wp_amt;
-	if (flag == 'p')
-		p_s->prec = wp_amt;
-	while (wp_amt > 0)
-	{
-		wp_amt = wp_amt / 10;
-		(*fmt)++;
-	}
-}
-
-static void	flag_chk(const char **fmt, t_printf *p_s, va_list arg)
-{
-	init_struct(p_s);
-	(*fmt)++;
+	iter_fmt(fmt);
 	while (str_schr(*(*fmt), "-0"))
 	{
 		if (*(*fmt) == '-')
 			p_s->min_flag = 1;
 		if (*(*fmt) == '0')
 			p_s->nul_flag = 1;
-		(*fmt)++;
+		iter_fmt(fmt);
 	}
 	if (*(*fmt) == '*')
 		wp_asterisk(fmt, p_s, arg, 'w');
@@ -93,7 +78,7 @@ static void	flag_chk(const char **fmt, t_printf *p_s, va_list arg)
 	if (*(*fmt) == '.')
 	{
 		p_s->prec_on = 1;
-		(*fmt)++;
+		iter_fmt(fmt);
 		if (*(*fmt) == '*')
 			wp_asterisk(fmt, p_s, arg, 'p');
 		else

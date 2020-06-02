@@ -3,28 +3,28 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: wmartens <wmartens@student.codam.nl>         +#+                     */
+/*   By: y4k_wm <y4k_wm@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/04/28 15:57:26 by wmartens      #+#    #+#                 */
-/*   Updated: 2020/04/28 15:57:57 by wmartens      ########   odam.nl         */
+/*   Created: 2020/05/30 17:47:57 by y4k_wm        #+#    #+#                 */
+/*   Updated: 2020/05/31 21:59:51 by y4k_wm        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_printf.h>
-#include <bsd/stdio.h>
+#include "ft_printf.h"
+#include <stdio.h>
 
-# define TEST "%.1u", 0
+# define TEST "%6.x", NULL
 
 int	main(void)
 {
-	int ret;
-	int retf;
-	void *ptr;
+	int r_wout;
+	int r_og;
 
-	ptr = 0;
-	ret = ft_printf(TEST);
-	printf("\t: %d <wout style\n", ret);
-	retf = printf(TEST);
-	printf("\t: %d <linuxxx style", retf);
+	ft_printf("\nWout___style:[");
+	r_wout = ft_printf(TEST);
+	ft_printf("] _rval =[%i]\n\n", r_wout);
+	ft_printf("Orinal_style:[");
+	r_og = printf(TEST);
+	printf("] _rval =[%i]", r_og);
 	return (0);
 }
